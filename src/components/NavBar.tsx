@@ -29,15 +29,12 @@ export default function NavBar() {
     };
   }, []);
   return (
-    <nav
-      ref={menuRef}
-      className="relative flex border justify-between rounded-2xl p-2 z-50"
-    >
+    <nav ref={menuRef} className="relative flex justify-between  p-2 z-50">
       <div>
         <BsFillSuitcase2Fill className="h-8 w-8 text-orange-600" />
       </div>
 
-      <div className="relative flex items-center gap-8 border rounded-4xl p-1 text-lg">
+      <div className="relative flex items-center gap-8  rounded-4xl p-2 text-lg bg-white">
         <h1>Mi Maleta</h1>
         <button
           onClick={() =>
@@ -48,7 +45,7 @@ export default function NavBar() {
         </button>
 
         {openMenu === "dispositivos" && (
-          <div className="absolute flex flex-col left-0 top-full mt-6 rounded-lg border bg-white p-2 z-50">
+          <div className="absolute flex flex-col left-0 top-full mt-2 rounded-lg border bg-white p-2 ">
             <ul>
               <li>Maleta 01</li>
             </ul>

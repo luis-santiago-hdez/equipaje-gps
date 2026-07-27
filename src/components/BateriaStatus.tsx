@@ -4,7 +4,7 @@ import { FcFullBattery } from "react-icons/fc";
 
 export default function BateriaStatus() {
   return (
-    <section className="flex flex-row border rounded-2xl p-2 justify-between">
+    <section className="flex flex-row  p-2 justify-between">
       <div className="flex gap-2 items-center">
         <p>Bateria:</p>
         <FcFullBattery className="w-6 h-6" />
