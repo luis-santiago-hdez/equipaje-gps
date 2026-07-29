@@ -4,6 +4,7 @@ import { BsFillSuitcase2Fill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { MdOutlineAddLocationAlt } from "react-icons/md";
+import { BsSuitcase2 } from "react-icons/bs";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -12,6 +13,8 @@ export default function NavBar() {
   const [openMenu, setOpenMenu] = useState<"dispositivos" | "cuenta" | null>(
     null,
   );
+
+  const [showAgregar, setShowAgregar] = useState(false);
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -45,14 +48,25 @@ export default function NavBar() {
         </button>
 
         {openMenu === "dispositivos" && (
-          <div className="absolute flex flex-col left-0 top-full mt-2 rounded-lg border bg-white p-2 ">
-            <ul>
-              <li>Maleta 01</li>
-            </ul>
-            <div className="flex gap-1">
-              <Link href="/agregar">Agregar</Link>
-              <MdOutlineAddLocationAlt className="w-6 h-6" />
+          <div className="absolute flex flex-col left-0 top-full mt-2 rounded-xl  bg-white p-2 gap-2">
+            <div className="flex bg-gray-400 rounded-xl p-2 gap-2">
+              <BsSuitcase2 className="w-6 h-6" />
+              <ul>
+                <li>Maleta 01</li>
+              </ul>
             </div>
+
+            <button
+              onClick={() => setShowAgregar(!showAgregar)}
+              className="bg-blue-400 rounded-xl p-2 text-center"
+            >
+              Agregar
+            </button>
+            {showAgregar && (
+              <div className="flex bg-amber-100 absolute">
+                <p>Test</p>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -65,11 +79,15 @@ export default function NavBar() {
         </button>
 
         {openMenu === "cuenta" && (
-          <div className="absolute right-0 mt-6 w-40 rounded-lg bg-white shadow-lg text-lg border ">
-            <Link href="/login" className="block px-4">
+          <div className="absolute flex flex-col right-0 mt-6 w-40 rounded-lg bg-white shadow-lg text-lg  gap-2 p-2">
+            <Link href="/login" className="block px-4 bg-amber-400 rounded-xl ">
               Iniciar sesion
             </Link>
-            <Link href="/crear-cuenta" className="block px-4">
+
+            <Link
+              href="/crear-cuenta"
+              className="block px-4 bg-blue-400 rounded-xl"
+            >
               Crear cuenta
             </Link>
           </div>
