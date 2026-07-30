@@ -3,52 +3,59 @@
 import { BsFillSuitcase2Fill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { MdOutlineAddLocationAlt } from "react-icons/md";
 import { BsSuitcase2 } from "react-icons/bs";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 export default function NavBar() {
-  const [openMenu, setOpenMenu] = useState<"dispositivos" | "cuenta" | null>(
-    null,
-  );
-
-  const [showAgregar, setShowAgregar] = useState(false);
+  const [currentMenu, setCurrentMenu] = useState<
+    | "none"
+    | "dispositivos"
+    | "agregar"
+    | "cuenta"
+    | "iniciarSesion"
+    | "crearCuenta"
+  >("none");
 
   const menuRef = useRef<HTMLDivElement>(null);
+  const menuTwo = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpenMenu(null);
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        !menuTwo.current?.contains(event.target as Node)
+      ) {
+        setCurrentMenu("none");
       }
     }
 
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return (
-    <nav ref={menuRef} className="relative flex justify-between  p-2 z-50">
+    <nav className="relative flex justify-between  p-2 z-50">
       <div>
         <BsFillSuitcase2Fill className="h-8 w-8 text-orange-600" />
       </div>
 
       <div className="relative flex items-center gap-8  rounded-4xl p-2 text-lg bg-white">
         <h1>Mi Maleta</h1>
-        <button
-          onClick={() =>
-            setOpenMenu(openMenu === "dispositivos" ? null : "dispositivos")
-          }
-        >
+        <button onClick={() => setCurrentMenu("dispositivos")}>
           <IoMdArrowDropdown className="w-6 h-6" />
         </button>
 
-        {openMenu === "dispositivos" && (
-          <div className="absolute flex flex-col left-0 top-full mt-2 rounded-xl  bg-white p-2 gap-2">
+        {currentMenu === "dispositivos" && (
+          <div
+            ref={menuRef}
+            className="absolute flex flex-col left-0 top-full mt-2 rounded-xl  bg-white p-2 gap-2"
+          >
             <div className="flex bg-gray-400 rounded-xl p-2 gap-2">
               <BsSuitcase2 className="w-6 h-6" />
               <ul>
@@ -57,39 +64,56 @@ export default function NavBar() {
             </div>
 
             <button
-              onClick={() => setShowAgregar(!showAgregar)}
+              onClick={() => setCurrentMenu("agregar")}
               className="bg-blue-400 rounded-xl p-2 text-center"
             >
               Agregar
             </button>
-            {showAgregar && (
-              <div className="flex bg-amber-100 absolute">
-                <p>Test</p>
-              </div>
-            )}
+          </div>
+        )}
+
+        {currentMenu === "agregar" && (
+          <div className="fixed left-1/2 flex flex-col -translate-x-1/2 top-1/2 -translate-y-1/2 mt-2 rounded-xl  bg-white p-2 gap-2">
+            <p>Test</p>
           </div>
         )}
       </div>
 
-      <div className="relative">
-        <button
-          onClick={() => setOpenMenu(openMenu === "cuenta" ? null : "cuenta")}
-        >
+      <div className="relative ">
+        <button onClick={() => setCurrentMenu("cuenta")}>
           <FaUser className="w-7 h-7 text-blue-600" />
         </button>
 
-        {openMenu === "cuenta" && (
-          <div className="absolute flex flex-col right-0 mt-6 w-40 rounded-lg bg-white shadow-lg text-lg  gap-2 p-2">
-            <Link href="/login" className="block px-4 bg-amber-400 rounded-xl ">
+        {currentMenu === "cuenta" && (
+          <div
+            ref={menuTwo}
+            className="absolute flex flex-col right-0 mt-6 w-40 rounded-lg bg-white shadow-lg text-lg  gap-2 p-2"
+          >
+            <button
+              onClick={() => setCurrentMenu("iniciarSesion")}
+              className="block px-4 bg-amber-400 rounded-xl "
+            >
               Iniciar sesion
-            </Link>
+            </button>
 
-            <Link
-              href="/crear-cuenta"
+            <button
+              onClick={() => setCurrentMenu("crearCuenta")}
               className="block px-4 bg-blue-400 rounded-xl"
             >
               Crear cuenta
-            </Link>
+            </button>
+          </div>
+        )}
+
+        {currentMenu === "crearCuenta" && (
+          <div className="fixed left-1/2 flex flex-col -translate-x-1/2 top-1/2 -translate-y-1/2  mt-6 rounded-lg bg-white shadow-lg text-lg  gap-2 p-2">
+            <p>Crear</p>
+          </div>
+        )}
+
+        {currentMenu === "iniciarSesion" && (
+          <div className="fixed left-1/2 flex flex-col -translate-x-1/2 top-1/2 -translate-y-1/2  mt-6  rounded-lg bg-white shadow-lg text-lg  gap-2 p-2">
+            <p>Sesion</p>
           </div>
         )}
       </div>
