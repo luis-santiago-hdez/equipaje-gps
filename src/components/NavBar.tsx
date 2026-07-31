@@ -4,9 +4,12 @@ import { BsFillSuitcase2Fill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { BsSuitcase2 } from "react-icons/bs";
+import { MdOutlineEmail } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { constants } from "buffer";
 
 export default function NavBar() {
   const [currentMenu, setCurrentMenu] = useState<
@@ -24,9 +27,18 @@ export default function NavBar() {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
+        currentMenu === "dispositivos" &&
         menuRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        !menuTwo.current?.contains(event.target as Node)
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        setCurrentMenu("none");
+        return;
+      }
+
+      if (
+        currentMenu === "cuenta" &&
+        menuTwo.current &&
+        !menuTwo.current.contains(event.target as Node)
       ) {
         setCurrentMenu("none");
       }
@@ -37,7 +49,7 @@ export default function NavBar() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [currentMenu]);
 
   return (
     <nav className="relative flex justify-between  p-2 z-50">
@@ -113,7 +125,23 @@ export default function NavBar() {
 
         {currentMenu === "iniciarSesion" && (
           <div className="fixed left-1/2 flex flex-col -translate-x-1/2 top-1/2 -translate-y-1/2  mt-6  rounded-lg bg-white shadow-lg text-lg  gap-2 p-2">
-            <p>Sesion</p>
+            <form action="">
+              <div className="flex flex-col gap-2 items-center p-2">
+                <div>Picture</div>
+                <div className="flex gap-2">
+                  <MdOutlineEmail className="w-7 h-7" />
+                  <input type="email" placeholder="Ingresa tu correo" />
+                </div>
+                <div className="flex gap-2">
+                  <RiLockPasswordLine className="w-7 h-7" />
+                  <input type="password" placeholder="Ingresa tu contrasenia" />
+                </div>
+                <div></div>
+                <button className="block px-4 bg-green-400 rounded-xl ">
+                  Iniciar sesion
+                </button>
+              </div>
+            </form>
           </div>
         )}
       </div>
