@@ -1,24 +1,21 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
+
 import { BsFillSuitcase2Fill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { BsSuitcase2 } from "react-icons/bs";
-import { MdOutlineEmail } from "react-icons/md";
-import { RiLockPasswordLine } from "react-icons/ri";
+import { CiRollingSuitcase } from "react-icons/ci";
 
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import { constants } from "buffer";
+type NavbarProps = {
+  setOpenModal: React.Dispatch<
+    React.SetStateAction<"login" | "register" | "addSuitcase" | null>
+  >;
+};
 
-export default function NavBar() {
+export default function NavBar({ setOpenModal }: NavbarProps) {
   const [currentMenu, setCurrentMenu] = useState<
-    | "none"
-    | "dispositivos"
-    | "agregar"
-    | "cuenta"
-    | "iniciarSesion"
-    | "crearCuenta"
+    "none" | "dispositivos" | "cuenta"
   >("none");
 
   const menuRef = useRef<HTMLDivElement>(null);
@@ -44,18 +41,16 @@ export default function NavBar() {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [currentMenu]);
 
   return (
     <nav className="relative flex justify-between  p-2 z-50">
-      <div>
-        <BsFillSuitcase2Fill className="h-8 w-8 text-orange-600" />
-      </div>
+      <BsFillSuitcase2Fill className="h-8 w-8 text-orange-600" />
 
       <div className="relative flex items-center gap-8  rounded-4xl p-2 text-lg bg-white">
         <h1>Mi Maleta</h1>
@@ -66,32 +61,28 @@ export default function NavBar() {
         {currentMenu === "dispositivos" && (
           <div
             ref={menuRef}
-            className="absolute flex flex-col left-0 top-full mt-2 rounded-xl  bg-white p-2 gap-2"
+            className="absolute flex flex-col top-0 mt-15  rounded-lg bg-white shadow-lg text-lg  gap-2 p-2"
           >
-            <div className="flex bg-gray-400 rounded-xl p-2 gap-2">
-              <BsSuitcase2 className="w-6 h-6" />
+            <div className="flex bg-gray-400 rounded-lg p-2">
+              <CiRollingSuitcase className="w-7 h-7" />
               <ul>
                 <li>Maleta 01</li>
               </ul>
             </div>
-
             <button
-              onClick={() => setCurrentMenu("agregar")}
-              className="bg-blue-400 rounded-xl p-2 text-center"
+              onClick={() => {
+                setCurrentMenu("none");
+                setOpenModal("addSuitcase");
+              }}
+              className="whitespace-nowrap bg-green-400 rounded-xl p-2 "
             >
-              Agregar
+              Agregar Maleta
             </button>
-          </div>
-        )}
-
-        {currentMenu === "agregar" && (
-          <div className="fixed left-1/2 flex flex-col -translate-x-1/2 top-1/2 -translate-y-1/2 mt-2 rounded-xl  bg-white p-2 gap-2">
-            <p>Test</p>
           </div>
         )}
       </div>
 
-      <div className="relative ">
+      <div className="relative">
         <button onClick={() => setCurrentMenu("cuenta")}>
           <FaUser className="w-7 h-7 text-blue-600" />
         </button>
@@ -102,46 +93,24 @@ export default function NavBar() {
             className="absolute flex flex-col right-0 mt-6 w-40 rounded-lg bg-white shadow-lg text-lg  gap-2 p-2"
           >
             <button
-              onClick={() => setCurrentMenu("iniciarSesion")}
+              onClick={() => {
+                setCurrentMenu("none");
+                setOpenModal("login");
+              }}
               className="block px-4 bg-amber-400 rounded-xl "
             >
               Iniciar sesion
             </button>
 
             <button
-              onClick={() => setCurrentMenu("crearCuenta")}
+              onClick={() => {
+                setCurrentMenu("none");
+                setOpenModal("register");
+              }}
               className="block px-4 bg-blue-400 rounded-xl"
             >
               Crear cuenta
             </button>
-          </div>
-        )}
-
-        {currentMenu === "crearCuenta" && (
-          <div className="fixed left-1/2 flex flex-col -translate-x-1/2 top-1/2 -translate-y-1/2  mt-6 rounded-lg bg-white shadow-lg text-lg  gap-2 p-2">
-            <p>Crear</p>
-          </div>
-        )}
-
-        {currentMenu === "iniciarSesion" && (
-          <div className="fixed left-1/2 flex flex-col -translate-x-1/2 top-1/2 -translate-y-1/2  mt-6  rounded-lg bg-white shadow-lg text-lg  gap-2 p-2">
-            <form action="">
-              <div className="flex flex-col gap-2 items-center p-2">
-                <div>Picture</div>
-                <div className="flex gap-2">
-                  <MdOutlineEmail className="w-7 h-7" />
-                  <input type="email" placeholder="Ingresa tu correo" />
-                </div>
-                <div className="flex gap-2">
-                  <RiLockPasswordLine className="w-7 h-7" />
-                  <input type="password" placeholder="Ingresa tu contrasenia" />
-                </div>
-                <div></div>
-                <button className="block px-4 bg-green-400 rounded-xl ">
-                  Iniciar sesion
-                </button>
-              </div>
-            </form>
           </div>
         )}
       </div>

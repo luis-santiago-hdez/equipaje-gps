@@ -1,7 +1,3 @@
-export default function Agregar() {
-  return (
-    <div>
-      <p>Agregar</p>
-    </div>
-  );
+export default function Page() {
+  return <div>Helli</div>;
 }
